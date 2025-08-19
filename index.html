@@ -124,7 +124,6 @@ function renderStoryboard() {
     row.className = "storyboard-row";
     panels.forEach((panel, idx) => {
       row.appendChild(panel);
-      // Add focus listeners to inputs in panel
       const inputs = panel.querySelectorAll('input, textarea, select');
       inputs.forEach((input) => {
         input.addEventListener('focus', () => {
@@ -157,9 +156,13 @@ function renderStoryboard() {
 // Move + button next to the focused/edited panel
 function moveAddBtn(currentPanel) {
   const allRows = document.querySelectorAll('.storyboard-row');
-  allRows.forEach(row => row.removeChild(addBtn));
+  allRows.forEach(row => {
+    if (Array.from(row.children).includes(addBtn)) {
+      row.removeChild(addBtn);
+    }
+  });
   const currentRow = currentPanel.parentNode;
-  currentRow.insertBefore(addBtn, currentPanel.nextSibling); // Place right next to current panel
+  currentRow.insertBefore(addBtn, currentPanel.nextSibling);
 }
 
 function addPanel() {
@@ -237,9 +240,8 @@ function addPanel() {
   `;
   panels.push(panel);
   renderStoryboard();
-  // After adding, move + to new panel
   moveAddBtn(panel);
-  panel.querySelector('input').focus(); // Focus new panel
+  panel.querySelector('input').focus();
 }
 
 function syncLabels(id) {
@@ -272,7 +274,7 @@ function previewImg(e, id) {
 
 function saveHeader() {
   document.getElementById("savedTitle").textContent = document.getElementById("titleField").value.toUpperCase();
-  document.getElementBy, document.getElementById("savedDirector").textContent = capitalizeWords(document.getElementById("directorField").value);
+  document.getElementById("savedDirector").textContent = capitalizeWords(document.getElementById("directorField").value);
   document.getElementById("savedSequence").textContent = capitalizeWords(document.getElementById("sequenceField").value);
   document.getElementById("editFields").style.display = "none";
   document.getElementById("savedHeader").style.display = "block";
