@@ -11,12 +11,10 @@ body { font-family: Arial, sans-serif; background: #fafafa; margin: 0; }
 .dark-mode input, .dark-mode textarea, .dark-mode select { background: #222; color: #fff; border-color: #555; }
 .dark-mode .storyboard-panel { background: #2a2a2a; }
 .dark-mode button { background: #444 !important; color: #eee !important; }
-
 .storyboard-container { max-width: 1200px; margin: 20px auto; background: #fff; border-radius: 8px; box-shadow: 0 2px 10px #bbb; padding: 16px; }
 .top-section { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; margin-bottom: 20px; }
 .top-fields { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
 .top-fields input { font-size: 16px; padding: 6px 9px; border: 1px solid #bbb; border-radius: 4px; width: 200px; }
-.top-label { font-weight: bold; }
 .saved-header { display: none; text-align: center; }
 .saved-title { font-size: 18px; font-weight: bold; letter-spacing: 1px; }
 .saved-director,.saved-sequence { font-size: 13px; margin: 0 8px; }
@@ -30,20 +28,17 @@ button { border: none; border-radius: 4px; padding: 8px 14px; cursor: pointer; }
 #exitPreviewBtn { background: #c72b2b; }
 #prevBtn,#nextBtn { background: #174668; color: white; }
 #prevBtn:disabled,#nextBtn:disabled { opacity: 0.5; cursor: not-allowed; }
-
 .storyboard-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; justify-content: flex-start; }
 .storyboard-panel { background: #f4f4f4; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; align-items: center; box-sizing: border-box; break-inside: avoid; page-break-inside: avoid; }
 .storyboard-thumbnail { width: 190px; height: 120px; background: #ddd; border-radius: 4px; object-fit: cover; margin-top: 6px; }
 .panel-label { font-weight: bold; width: 100%; margin: 5px 0 3px; }
 input,textarea,select { width: 100%; font-size: 15px; padding: 4px 7px; border-radius: 3px; border: 1px solid #ccc; margin-bottom: 8px; }
 textarea { resize: vertical; }
-
 #previewArea { display: none; text-align: center; max-width: 500px; margin: 20px auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px #bbb; }
 .preview-thumbnail { width: 250px; height: auto; border-radius: 4px; }
 .print-shotname { font-size: 20px; font-weight: bold; margin: 10px 0; }
 .print-description { font-size: 16px; margin-top: 10px; }
 .print-select { font-size: 12px; font-style: italic; margin-top: 4px; color: #333; }
-
 @media (max-width: 768px) {
   .storyboard-row { flex-direction: column; align-items: center; }
   .storyboard-panel { width: 95% !important; }
@@ -53,7 +48,6 @@ textarea { resize: vertical; }
   #previewArea { max-width: 95%; }
   .preview-thumbnail { width: 100%; }
 }
-
 @media print {
   @page { margin: 0.5cm; }
   button, input, textarea, select, .panel-label, .add-shot-main, .add-shot-mobile, #previewModeBtn, #previewArea {
@@ -95,15 +89,11 @@ textarea { resize: vertical; }
 </style>
 </head>
 <body>
-
 <div class="storyboard-container" id="mainStoryboard">
   <div class="top-section">
     <div class="top-fields" id="editFields">
-      <span class="top-label">Title:</span>
       <input type="text" id="titleField" placeholder="Storyboard Title" />
-      <span class="top-label">Director:</span>
       <input type="text" id="directorField" placeholder="Director Name" />
-      <span class="top-label">Sequence:</span>
       <input type="text" id="sequenceField" placeholder="Sequence" />
       <button class="save-btn" onclick="saveHeader()">Save</button>
     </div>
@@ -114,15 +104,12 @@ textarea { resize: vertical; }
       <button class="edit-btn" onclick="editHeader()">Edit</button>
     </div>
   </div>
-
   <div id="storyboardRows"></div>
-
   <button class="add-shot-main" onclick="addPanel()">Add Shot</button>
   <button onclick="window.print()">Print as PDF</button>
   <button id="previewModeBtn">Preview</button>
   <button id="darkModeBtn" onclick="toggleDarkMode()">Toggle Dark Mode</button>
 </div>
-
 <div id="previewArea">
   <div id="previewHeader"></div>
   <div>
@@ -137,7 +124,6 @@ textarea { resize: vertical; }
     <button id="exitPreviewBtn">Exit Preview</button>
   </div>
 </div>
-
 <script>
 let panels = [], panelId = 0, currentPreviewIdx = 0;
 let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -168,15 +154,13 @@ function renderStoryboard() {
     }
   }
 }
-
 function addPanel() {
   panelId++;
   const panel = document.createElement("div");
   panel.className = "storyboard-panel";
   panel.innerHTML = `
-    <label class="panel-label">Scene Number</label>
-    <input type="text" id="scene${panelId}" oninput="syncLabels(${panelId})" />
-
+    <label class="panel-label">Shot Number</label>
+    <input type="text" id="scene${panelId}" oninput="syncLabels(${panelId})" placeholder="e.g. 1" />
     <label class="panel-label">Shot Size</label>
     <select id="shotSize${panelId}" onchange="syncLabels(${panelId})">
       <option value="">-- Select --</option>
@@ -192,7 +176,6 @@ function addPanel() {
       <option>Choker Shot</option>
       <option>Establishing Shot</option>
     </select>
-
     <label class="panel-label">Camera Angle</label>
     <select id="camAngle${panelId}" onchange="syncLabels(${panelId})">
       <option value="">-- Select --</option>
@@ -203,7 +186,6 @@ function addPanel() {
       <option>Worm's-Eye View</option>
       <option>Dutch Angle / Canted Angle</option>
     </select>
-
     <label class="panel-label">Framing & Composition</label>
     <select id="framing${panelId}" onchange="syncLabels(${panelId})">
       <option value="">-- Select --</option>
@@ -214,7 +196,6 @@ function addPanel() {
       <option>Point-of-View (POV)</option>
       <option>Master Shot</option>
     </select>
-
     <label class="panel-label">Camera Movement</label>
     <select id="camMovement${panelId}" onchange="syncLabels(${panelId})">
       <option value="">-- Select --</option>
@@ -228,7 +209,6 @@ function addPanel() {
       <option>Pedestal Shot</option>
       <option>Roll Shot</option>
     </select>
-
     <label class="panel-label">Focus Technique</label>
     <select id="focusTech${panelId}" onchange="syncLabels(${panelId})">
       <option value="">-- Select --</option>
@@ -239,7 +219,6 @@ function addPanel() {
       <option>Tilt-Shift</option>
       <option>Split Diopter</option>
     </select>
-
     <label class="panel-label">Description</label>
     <textarea id="desc${panelId}" oninput="syncLabels(${panelId})"></textarea>
     <input type="file" accept="image/*" id="img${panelId}" onchange="previewImg(event, ${panelId})" />
@@ -251,10 +230,8 @@ function addPanel() {
   panels.push(panel);
   renderStoryboard();
 }
-
 function syncLabels(id) {
   const scene = document.getElementById(`scene${id}`).value.trim();
-
   const selections = [
     document.getElementById(`shotSize${id}`).value,
     document.getElementById(`camAngle${id}`).value,
@@ -262,10 +239,8 @@ function syncLabels(id) {
     document.getElementById(`camMovement${id}`).value,
     document.getElementById(`focusTech${id}`).value
   ].filter(Boolean).join(", ");
-
   document.getElementById(`printShot${id}`).textContent = scene ? scene + "." : "";
   document.getElementById(`printDesc${id}`).textContent = capitalizeWords(document.getElementById(`desc${id}`).value.trim());
-
   const selectsSpan = document.getElementById(`printSelects${id}`);
   if (selections) {
     selectsSpan.style.display = "block";
@@ -274,7 +249,6 @@ function syncLabels(id) {
     selectsSpan.style.display = "none";
   }
 }
-
 function previewImg(e, id) {
   const file = e.target.files[0];
   if (!file) return;
@@ -286,11 +260,10 @@ function previewImg(e, id) {
   };
   reader.readAsDataURL(file);
 }
-
 function saveHeader() {
   document.getElementById("savedTitle").textContent = document.getElementById("titleField").value.toUpperCase();
-  document.getElementById("savedDirector").textContent = "Director: " + capitalizeWords(document.getElementById("directorField").value);
-  document.getElementById("savedSequence").textContent = "Sequence: " + capitalizeWords(document.getElementById("sequenceField").value);
+  document.getElementById("savedDirector").textContent = capitalizeWords(document.getElementById("directorField").value);
+  document.getElementById("savedSequence").textContent = capitalizeWords(document.getElementById("sequenceField").value);
   document.getElementById("editFields").style.display = "none";
   document.getElementById("savedHeader").style.display = "block";
 }
@@ -301,7 +274,6 @@ function editHeader() {
 function capitalizeWords(str) {
   return str.replace(/\w\S*/g, (t) => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase());
 }
-
 // PREVIEW MODE
 function enterPreview(index = 0) {
   if (panels.length === 0) return;
@@ -327,16 +299,13 @@ function showPreview(idx) {
   document.getElementById("prevBtn").disabled = idx === 0;
   document.getElementById("nextBtn").disabled = idx === panels.length - 1;
 }
-
 document.getElementById("previewModeBtn").onclick = () => enterPreview();
 document.getElementById("exitPreviewBtn").onclick = exitPreview;
 document.getElementById("prevBtn").onclick = () => showPreview(currentPreviewIdx - 1);
 document.getElementById("nextBtn").onclick = () => showPreview(currentPreviewIdx + 1);
-
 function toggleDarkMode() {
   document.body.classList.toggle("dark-mode");
 }
-
 // Initialize with panels (1 for mobile, 5 desktop)
 for (let i = 0; i < (isMobile ? 1 : 5); i++) addPanel();
 </script>
