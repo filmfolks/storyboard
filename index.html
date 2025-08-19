@@ -50,51 +50,25 @@ textarea { resize: vertical; }
 }
 @media print {
   @page { margin: 0.5cm; }
-  button, input, textarea, select, .panel-label, .add-shot-main, .add-shot-mobile, #previewModeBtn, #previewArea {
-    display: none !important;
-  }
-  .saved-header {
-    display: block !important;
-    text-align: center;
-    margin-bottom: 10px;
-  }
-  .storyboard-row {
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    gap: 6mm !important;
-    justify-content: flex-start !important;
-    max-width: 210mm;
-    margin: 0 auto;
-  }
-  .storyboard-panel {
-    width: calc((100% / 5) - 6mm) !important;
-    padding: 4mm !important;
-    box-sizing: border-box;
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-  }
-  .storyboard-thumbnail {
-    width: 100% !important;
-    height: auto !important;
-    display: block !important;
-    object-fit: cover;
-  }
-  .print-shotname, .print-select, .print-description {
-    display: block !important;
-    text-align: center;
-    margin: 4px 0;
-    font-size: 12pt;
-  }
+  button, input, textarea, select, .panel-label, .add-shot-main, .add-shot-mobile, #previewModeBtn, #previewArea { display: none !important; }
+  .saved-header { display: block !important; text-align: center; margin-bottom: 10px; }
+  .storyboard-row { flex-direction: row !important; flex-wrap: wrap !important; gap: 12px !important; justify-content: center !important; }
+  .storyboard-panel { width: 180px !important; padding: 8px !important; display: flex; flex-direction: column; align-items: center; }
+  .storyboard-thumbnail { width: 160px !important; height: 100px !important; display: block !important; object-fit: cover; margin: 0 auto; }
+  .print-shotname { display: block !important; font-size: 14px; font-weight: bold; width: 160px; text-align: center; margin-bottom: 5px; }
+  .print-select { display: block !important; font-size: 12px; width: 160px; text-align: center; font-style: italic; margin-top: 4px; color: #333; }
+  .print-description { display: block !important; font-size: 13px; width: 160px; text-align: center; margin-top: 8px; }
 }
 </style>
 </head>
 <body>
+
 <div class="storyboard-container" id="mainStoryboard">
   <div class="top-section">
     <div class="top-fields" id="editFields">
-      <input type="text" id="titleField" placeholder="Storyboard Title" />
-      <input type="text" id="directorField" placeholder="Director Name" />
-      <input type="text" id="sequenceField" placeholder="Sequence" />
+      <input type="text" id="titleField" placeholder="Storyboard Title">
+      <input type="text" id="directorField" placeholder="Director Name">
+      <input type="text" id="sequenceField" placeholder="Sequence">
       <button class="save-btn" onclick="saveHeader()">Save</button>
     </div>
     <div class="saved-header" id="savedHeader">
@@ -110,6 +84,7 @@ textarea { resize: vertical; }
   <button id="previewModeBtn">Preview</button>
   <button id="darkModeBtn" onclick="toggleDarkMode()">Toggle Dark Mode</button>
 </div>
+
 <div id="previewArea">
   <div id="previewHeader"></div>
   <div>
@@ -124,6 +99,7 @@ textarea { resize: vertical; }
     <button id="exitPreviewBtn">Exit Preview</button>
   </div>
 </div>
+
 <script>
 let panels = [], panelId = 0, currentPreviewIdx = 0;
 let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -160,7 +136,7 @@ function addPanel() {
   panel.className = "storyboard-panel";
   panel.innerHTML = `
     <label class="panel-label">Shot Number</label>
-    <input type="text" id="scene${panelId}" oninput="syncLabels(${panelId})" placeholder="e.g. 1" />
+    <input type="text" id="scene${panelId}" oninput="syncLabels(${panelId})" />
     <label class="panel-label">Shot Size</label>
     <select id="shotSize${panelId}" onchange="syncLabels(${panelId})">
       <option value="">-- Select --</option>
